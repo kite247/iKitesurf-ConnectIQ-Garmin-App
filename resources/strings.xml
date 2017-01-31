@@ -1,0 +1,6 @@
+<resources>
+    <string id="AppName">Wind Info</string>
+    <string id="AppVersionTitle">Version</string>
+    <string id="ikUsername">iKitesurf username</string>
+    <string id="ikPassword">Password</string>
+</resources>
