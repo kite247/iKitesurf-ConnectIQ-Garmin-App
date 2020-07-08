@@ -1,12 +1,6 @@
-//
-// Copyright 2015-2016 by Garmin Ltd. or its subsidiaries.
-// Subject to Garmin SDK License Agreement and Wearables
-// Application Developer Agreement.
-//
-
 using Toybox.Application as App;
 
-class WebRequestApp extends App.AppBase {
+class iKitesurfApp extends App.AppBase {
     hidden var mView;
 
     function initialize() {
@@ -23,8 +17,8 @@ class WebRequestApp extends App.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        mView = new WebRequestView();
-        return [mView, new WebRequestDelegate(mView)];
+        mView = new iKitesurfView();
+        return [mView, new iKitesurfDelegate(mView)];
     }
     
     // Settings were changed by user

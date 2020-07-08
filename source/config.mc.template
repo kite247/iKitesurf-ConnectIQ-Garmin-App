@@ -1,0 +1,3 @@
+// Create a copy of this template and name it "config.mc" in your source folder
+
+var apiKey = ""; // You need to request an API key from weatherflow.com and agree to their usage policy

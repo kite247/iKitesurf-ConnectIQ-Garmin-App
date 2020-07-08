@@ -1,20 +1,13 @@
-//
-// Copyright 2016 by Garmin Ltd. or its subsidiaries.
-// Subject to Garmin SDK License Agreement and Wearables
-// Application Developer Agreement.
-//
-
 using Toybox.Communications as Comm;
 using Toybox.WatchUi as Ui;
 using Toybox.Timer as Timer;
 using Toybox.Application as App;
 using Toybox.System as Sys;
 
-class WebRequestDelegate extends Ui.BehaviorDelegate {
+class iKitesurfDelegate extends Ui.BehaviorDelegate {
     var parentView;
     var timer;
-    var spotList = "";//"507,1374,423,408,410,981,427,411,416,150079,425";
-    var apiKey = "0212aced-f7c7-48cc-b404-6f202af82151";
+    var spotList = "";    
     
     var requestIntervalShort = 59; // Once per minute
     var requestIntervalMedium = 299; // Every 5 minutes
@@ -37,17 +30,14 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
         
         lastLastUserInteractionTime = Sys.getTimer();
         
-        // ---- Remove for production ----
-        
-        //App.getApp().setProperty("apiToken","");
-       /*
-        System.println("version 1");
-        if(App.getApp().getProperty("username").length()==0) {
-        	App.getApp().setProperty("username","thomaswinkler");
-        	App.getApp().setProperty("password","cabrinha4lyfe");
+        // Manually set username and password from config file when testing on the simulator
+
+        if(App.getApp().getProperty("username").length()==0 && testUsername.length()>0) {
+        	App.getApp().setProperty("username",testUsername);
+        }
+        if(App.getApp().getProperty("password").length()==0 && testPassword.length()>0) {
+        	App.getApp().setProperty("password",testPassword);
         } 
-        */
-        // ---- End remove for production ----
  		
  		//System.println("Auth successful: "+App.getApp().getProperty("authSuccessful").toString());
  		System.println("wf_token: "+App.getApp().getProperty("apiToken"));
@@ -152,7 +142,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
     	}
         
         var apiToken = App.getApp().getProperty("apiToken");
-        var url = "http://api.weatherflow.com/wxengine/rest/spot/getSpotSetByList?format=json&v=1.3&wf_apikey="+apiKey+"&wf_token="+apiToken+"&uid=356696656686243&profile_id=278808&spot_list="+spotList+"&page=1&units_wind=kts&units_temp=C&units_distance=km&device_id=356696656686243&device_type=Android&device_os=6.0.1&wa_ver=2.5&activity=Kite&spot_types=1,100,101&";
+        var url = "https://api.weatherflow.com/wxengine/rest/spot/getSpotSetByList?format=json&v=1.3&wf_apikey="+apiKey+"&wf_token="+apiToken+"&uid=356696656686243&profile_id=278808&spot_list="+spotList+"&page=1&units_wind=kts&units_temp=C&units_distance=km&device_id=356696656686243&device_type=Android&device_os=6.0.1&wa_ver=2.5&activity=Kite&spot_types=1,100,101&";
 		System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
@@ -172,7 +162,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
         
         var apiToken = App.getApp().getProperty("apiToken");
         var profileId = App.getApp().getProperty("profileId");
-        var url = "http://api.weatherflow.com/wxengine/rest/profile/getProfiles?profile_id="+profileId+"&format=json&wf_apikey="+apiKey+"&v=1.3&wf_token="+apiToken+"&";
+        var url = "https://api.weatherflow.com/wxengine/rest/profile/getProfiles?profile_id="+profileId+"&format=json&wf_apikey="+apiKey+"&v=1.3&wf_token="+apiToken+"&";
 		System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
@@ -194,7 +184,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
         var password = Application.getApp().getProperty("password");
         var apiToken = App.getApp().getProperty("apiToken");
         
-        var url = "http://api.weatherflow.com/wxengine/rest/session/authUser?format=json&v=1.3&wf_apikey="+apiKey+"&wf_token="+apiToken+"&uid=356696656686243&wf_user="+username+"&wf_pass="+password+"&";
+        var url = "https://api.weatherflow.com/wxengine/rest/session/authUser?format=json&v=1.3&wf_apikey="+apiKey+"&wf_token="+apiToken+"&uid=356696656686243&wf_user="+username+"&wf_pass="+password+"&";
 		System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
@@ -212,7 +202,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
     	System.println("Requesting new token");
         parentView.renderUiWithData("Requesting new token");
         
-        var url = "http://api.weatherflow.com/wxengine/rest/session/getToken?format=json&v=1.3&wf_apikey="+apiKey+"&";
+        var url = "https://api.weatherflow.com/wxengine/rest/session/getToken?format=json&v=1.3&wf_apikey="+apiKey+"&";
 		System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
@@ -229,6 +219,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
     // Receive the data from the web request
     function onReceiveSpotList(responseCode, data) {
     	if(responseCode == 200) {
+    		//System.println("Received spotlist data: " + data);
     		if(data["status"]["status_code"]==0) {
     			// Success
     			validDataHasBeenReceived = true;
@@ -286,7 +277,7 @@ class WebRequestDelegate extends Ui.BehaviorDelegate {
     
     function onReceiveGetToken(responseCode, data) {
     	if(responseCode == 200) {
-    		System.println("Response: "+data);
+    		//System.println("Response: "+data);
     		if(data["status"]["status_code"]==0) {
     			// Successfully received token
     			parentView.renderUiWithData("Success");

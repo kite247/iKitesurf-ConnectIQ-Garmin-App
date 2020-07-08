@@ -1,16 +1,10 @@
-//
-// Copyright 2015-2016 by Garmin Ltd. or its subsidiaries.
-// Subject to Garmin SDK License Agreement and Wearables
-// Application Developer Agreement.
-//
-
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics;
 using Toybox.System as Sys;
 using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Calendar;
 
-class WebRequestView extends Ui.View {
+class iKitesurfView extends Ui.View {
     hidden var mMessage = "Press menu button";
     
     hidden var spaceFromTop = 5;
@@ -67,11 +61,13 @@ class WebRequestView extends Ui.View {
 	    var mLastUpdateTime = null;
 	    var mAirTemp = null;
 	    var mWaterTemp = null;
-	    var mStatusMessage = null;
+	    var mStatusMessage = null;	    
     
     	if(mMessage == null && mResponseData["status"]["status_code"]==0) {
     	
     		if(mResponseData["data_values"][currentSpot][19]) {
+    			//System.println("Response data: " + mResponseData["data_values"]);
+    			//System.println("Current spot data" + mResponseData["data_values"][currentSpot]);
     			mCurrentWind = mResponseData["data_values"][currentSpot][19].toNumber();
     		} else {
     			System.println("Warning: Wind speed not available");
