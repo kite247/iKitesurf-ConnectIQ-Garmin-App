@@ -3,6 +3,10 @@
         <iq:products>
             <iq:product id="d2bravo"/>
             <iq:product id="d2bravo_titanium"/>
+            <iq:product id="d2charlie"/>
+            <iq:product id="d2delta"/>
+            <iq:product id="d2deltapx"/>
+            <iq:product id="d2deltas"/>
             <iq:product id="fenix3"/>
             <iq:product id="fenix3_hr"/>
             <iq:product id="fenix5"/>
@@ -17,6 +21,25 @@
             <iq:product id="fenix6spro"/>
             <iq:product id="fenix6xpro"/>
             <iq:product id="fenixchronos"/>
+            <iq:product id="fr230"/>
+            <iq:product id="fr235"/>
+            <iq:product id="fr245"/>
+            <iq:product id="fr245m"/>
+            <iq:product id="fr630"/>
+            <iq:product id="fr645"/>
+            <iq:product id="fr645m"/>
+            <iq:product id="fr735xt"/>
+            <iq:product id="fr920xt"/>
+            <iq:product id="fr935"/>
+            <iq:product id="fr945"/>
+            <iq:product id="marqadventurer"/>
+            <iq:product id="marqathlete"/>
+            <iq:product id="marqaviator"/>
+            <iq:product id="marqcaptain"/>
+            <iq:product id="marqcommander"/>
+            <iq:product id="marqdriver"/>
+            <iq:product id="marqexpedition"/>
+            <iq:product id="marqgolfer"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Communications"/>
