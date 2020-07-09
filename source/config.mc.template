@@ -1,3 +1,8 @@
 // Create a copy of this template and name it "config.mc" in your source folder
 
-var apiKey = ""; // You need to request an API key from weatherflow.com and agree to their usage policy
+// You need to request an API key from weatherflow.com and agree to their usage policy
+var apiKey = ""; 
+
+// For debugging on the simulator, put your iKitesurf.com account data here (real users need to enter their credentials in the settings)
+var testUsername = "";
+var testPassword = "";
