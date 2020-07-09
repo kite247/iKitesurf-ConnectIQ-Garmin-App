@@ -11,7 +11,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     
     var requestIntervalShort = 59; // Once per minute
     var requestIntervalMedium = 299; // Every 5 minutes
-    var requestIntervalLong = 899; // Every 15 minutes
+    var requestIntervalLong = 599; // Every 10 minutes
     
     var secondsOfUserInactivityToTriggerMediumRequestInterval = 3600;
     var secondsOfUserInactivityToTriggerLongRequestInterval = 7200;
@@ -23,7 +23,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     
     var validDataHasBeenReceived = false;
     
-        // Set up the callback to the view
+    // Set up the callback to the view
     function initialize(view) {
         Ui.BehaviorDelegate.initialize();
         parentView = view;
@@ -40,24 +40,24 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
         } 
  		
  		//System.println("Auth successful: "+App.getApp().getProperty("authSuccessful").toString());
- 		System.println("wf_token: "+App.getApp().getProperty("apiToken"));
+ 		//System.println("wf_token: "+App.getApp().getProperty("apiToken"));
  		if(App.getApp().getProperty("username").length()>0 && App.getApp().getProperty("password").length()>0) {
  			if(App.getApp().getProperty("authSuccessful")==true&&App.getApp().getProperty("apiToken").length()>0) {
- 				System.println("Requesting profile, since authSuccessful flag == true and wf_token is available");
+ 				//System.println("Requesting profile, since authSuccessful flag == true and wf_token is available");
  				makeRequestForProfile();
  			} else {
- 				System.println("test: " + App.getApp().getProperty("apiToken"));
+ 				//System.println("API Token: " + App.getApp().getProperty("apiToken"));
  				if(App.getApp().getProperty("apiToken")!=null && App.getApp().getProperty("apiToken").length()>0) {
- 					System.println("apiToken exists, but authSuccessful=="+App.getApp().getProperty("authSuccessful").toString());
+ 					//System.println("apiToken exists, but authSuccessful=="+App.getApp().getProperty("authSuccessful").toString());
  					makeRequestForAuthUser();
  				} else {
- 					System.println("No apiToken stored, requesting token.");
+ 					//System.println("No apiToken stored, requesting token.");
  					makeRequestForGetToken();
  				}
  				
  			}
  			
- 			// Set up timer for updating the clock once a minute and firing off requests to uddate wind data
+ 			// Set up timer for updating the clock once a minute and firing off requests to update wind data
  			timer = new Timer.Timer();
  			timer.start(method(:timerFired), 60000, true);
  		} else {
@@ -70,13 +70,12 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
 
     // Handle menu button press
     function onMenu() {
-    	System.println("On Menu");
-        //makeRequestForSpotList();
+    	//System.println("On Menu");
         return true;
     }
 
     function onSelect() {
-    	System.println("On Select");
+    	//System.println("On Select");
     	userInteractionHappened();
     	parentView.renderUiWithData("Loading data");
     	makeRequestForSpotList();
@@ -85,18 +84,16 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     
     
     function onNextPage() {
-    	System.println("onNextPage");
+    	//System.println("onNextPage");
     	userInteractionHappened();
     	parentView.onNextPage();
- 
         return true;
     }
     
     function onPreviousPage() {
-    	System.println("onPreviousPage");
+    	//System.println("onPreviousPage");
     	userInteractionHappened();
     	parentView.onPreviousPage();
- 
         return true;
     }
     
@@ -104,18 +101,16 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     	lastLastUserInteractionTime = Sys.getTimer();
     }
     
-    function timerFired() {
-    	System.println("In timerFired");
-    	
+    function timerFired() {    	
     	// Adjust request interval dynamically depending on last user interaction with select button
     	if(secondsSince(lastLastUserInteractionTime)>secondsOfUserInactivityToTriggerLongRequestInterval) { // No user action for 2 hours
-    		System.println("Switching to long polling interval");
+    		//System.println("Switching to long polling interval");
     		requestIntervalCurrent = requestIntervalLong;
     	} else if(secondsSince(lastLastUserInteractionTime)>secondsOfUserInactivityToTriggerMediumRequestInterval) { // No user action for an hour
-    		System.println("Switching to medium polling interval");
+    		//System.println("Switching to medium polling interval");
     		requestIntervalCurrent = requestIntervalMedium;
     	} else {
-    		System.println("Switching to short polling interval");
+    		//System.println("Switching to short polling interval");
     		requestIntervalCurrent = requestIntervalShort;
     	}
     	
@@ -124,7 +119,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     		if(lastRequestTime == null || (secondsSince(lastRequestTime)>requestIntervalCurrent)) {
     			makeRequestForSpotList();
     		} else {
-    			System.println("Not making a request since last request was: "+(Sys.getTimer()-lastRequestTime).toString()+" and request interval is "+requestIntervalCurrent.toString());
+    			//System.println("Not making a request since last request was: "+(Sys.getTimer()-lastRequestTime).toString()+" and request interval is "+requestIntervalCurrent.toString());
     			parentView.renderUiWithData(null);
     		}
     	}
@@ -157,13 +152,13 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     }
     
     function makeRequestForProfile() {
-    	System.println("Executing request for profile");
+    	//System.println("Executing request for profile");
     	parentView.renderUiWithData("Getting favorite spots");
         
         var apiToken = App.getApp().getProperty("apiToken");
         var profileId = App.getApp().getProperty("profileId");
         var url = "https://api.weatherflow.com/wxengine/rest/profile/getProfiles?profile_id="+profileId+"&format=json&wf_apikey="+apiKey+"&v=1.3&wf_token="+apiToken+"&";
-		System.println("URL: " + url);
+		//System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
             {
@@ -177,7 +172,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     }
     
     function makeRequestForAuthUser() {
-    	System.println("Authenticating User");
+    	//System.println("Authenticating User");
         parentView.renderUiWithData("Authenticating User");
                 
         var username = Application.getApp().getProperty("username");
@@ -185,7 +180,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
         var apiToken = App.getApp().getProperty("apiToken");
         
         var url = "https://api.weatherflow.com/wxengine/rest/session/authUser?format=json&v=1.3&wf_apikey="+apiKey+"&wf_token="+apiToken+"&uid=356696656686243&wf_user="+username+"&wf_pass="+password+"&";
-		System.println("URL: " + url);
+		//System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
             {
@@ -199,11 +194,11 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     }    
     
     function makeRequestForGetToken() {
-    	System.println("Requesting new token");
+    	//System.println("Requesting new token");
         parentView.renderUiWithData("Requesting new token");
         
         var url = "https://api.weatherflow.com/wxengine/rest/session/getToken?format=json&v=1.3&wf_apikey="+apiKey+"&";
-		System.println("URL: " + url);
+		//System.println("URL: " + url);
         Comm.makeWebRequest(
            url,
             {
@@ -233,26 +228,25 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     		}
     		
     	} else {
-    		//parentView.renderUiWithData("Failed to load\nError: " + responseCode.toString());
     		parentView.renderUiWithData("Unable to load data.\nInternet connection required.");
     	}
         
     }
     
-        // Receive the data from the web request
+    // Receive the data from the web request
     function onReceiveAuthUser(responseCode, data) {
     	if(responseCode == 200) {
-    		System.println("Response: "+data);
+    		//System.println("Response: "+data);
     		if(data["status"]["status_code"]==0) {
     			// Successfully received token
     			parentView.renderUiWithData("Success");
     			
     			var profileId = data["wf_user"]["active_profile_id"];
     			App.getApp().setProperty("profileId",profileId);
-    			System.println("Received profileId: "+profileId);   
+    			//System.println("Received profileId: "+profileId);   
     			
     			var memberLevelName = data["wf_user"]["member_level_name"];		
-    			if(memberLevelName.equals("Pro")||memberLevelName.equals("Plus")||memberLevelName.equals("Enterprise")) {
+    			if(memberLevelName.equals("Pro")||memberLevelName.equals("Plus")||memberLevelName.equals("Enterprise")||memberLevelName.equals("Gold")) {
     				App.getApp().setProperty("authSuccessful",true);
     				makeRequestForProfile();
     			} else {
@@ -269,7 +263,6 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     		}
     		
     	} else {
-    		//parentView.renderUiWithData("Failed to load\nError: " + responseCode.toString());
     		parentView.renderUiWithData("Unable to load data.\nInternet connection required.");
     	}
         
@@ -284,7 +277,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
  
     			var apiToken = data["wf_token"];
     			App.getApp().setProperty("apiToken",apiToken);
-    			System.println("Received new token: "+apiToken);		
+    			//System.println("Received new token: "+apiToken);		
     			
     			makeRequestForAuthUser();
     		} else {
@@ -292,10 +285,8 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     		}
     		
     	} else {
-    		//parentView.renderUiWithData("Failed to load\nError: " + responseCode.toString());
     		parentView.renderUiWithData("Unable to load data.\nInternet connection required.");
     	}
-        
     }
     
     function onReceiveProfileResponse(responseCode, data) {
@@ -305,9 +296,9 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     			parentView.renderUiWithData("Success");
  
     			var favoritesArr = data["profiles"][0]["favorite_spots"];
-    			System.println("favorites arr: "+favoritesArr);
+    			//System.println("favorites arr: "+favoritesArr);
     			
-    			System.println("Number of favorites: "+favoritesArr.size());
+    			//System.println("Number of favorites: "+favoritesArr.size());
     			
     			if(favoritesArr.size()>0) {
     				spotList = "";
@@ -316,7 +307,7 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     					spotList = spotList+currSpotId+",";
     				}
     			
-    				System.println("Final spot list: "+spotList);
+    				//System.println("Final spot list: "+spotList);
     			
     				// Now that we have the list of favorite spots, request the wind data for those
     				makeRequestForSpotList();
@@ -327,21 +318,17 @@ class iKitesurfDelegate extends Ui.BehaviorDelegate {
     			
     		} else if(data["status"]["status_code"]==2) {
     			// Invalid token
-    			//parentView.renderUiWithData("API auth failed");
     			App.getApp().getProperty("authSuccessful",false);
     			parentView.renderUiWithData("Requesting new token");
     			makeRequestForAuthUser();
     		}
     		
     	} else {
-    		//parentView.renderUiWithData("Failed to load\nError: " + responseCode.toString());
     		parentView.renderUiWithData("Unable to load data.\nInternet connection required.");
     	}
         
     }
-    
-    // Utils
-    
+        
     function secondsSince(time) {
     	return (Sys.getTimer()-time)/1000;
     }

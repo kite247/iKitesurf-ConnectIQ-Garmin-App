@@ -27,7 +27,7 @@ class iKitesurfView extends Ui.View {
     
     function onNextPage() {
     	currentSpot = currentSpot+1;
-    	System.println("spot amount:"+mResponseData["data_values"].size());
+    	//System.println("spot amount:"+mResponseData["data_values"].size());
     	
     	if(currentSpot>(mResponseData["data_values"].size()-1)) {
     		currentSpot = 0;
@@ -96,7 +96,7 @@ class iKitesurfView extends Ui.View {
         	if(mTimestamp!=null && (mTimestamp.length()>17)) {
         		mLastUpdateTime = mTimestamp.substring(11,16);
         	}
-        	System.println("Last update time: "+mLastUpdateTime);
+        	//System.println("Last update time: "+mLastUpdateTime);
         	
         	if(mResponseData["data_values"][currentSpot][24]) {
         		mAirTemp = mResponseData["data_values"][currentSpot][24].toNumber();
@@ -126,13 +126,10 @@ class iKitesurfView extends Ui.View {
         } else {
         	// Current Wind
             dc.drawText(dc.getWidth()/2, 41+spaceFromTop, Graphics.FONT_NUMBER_THAI_HOT, mCurrentWind, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        	
-        	
         	// Unit
         	dc.drawText(dc.getWidth()/2+35, 76+spaceFromTop, Graphics.FONT_TINY, mUnitWind + " " + mCurrentWindDirection, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
         	// Spot name
         	dc.drawText(dc.getWidth()/2, dc.getHeight()/2-5+spaceFromTop, Graphics.FONT_SMALL, mSpotName, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        	
         	dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         	// Gust Lull
         	if(!(mLullWind.equals("n/a")&&mGustWind.equals("n/a"))) {
@@ -159,10 +156,6 @@ class iKitesurfView extends Ui.View {
         	
         	// Last update timestamp
         	dc.drawText(73, yPosition+spaceFromTop, Graphics.FONT_TINY, mLastUpdateTime, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
-        	
-        	
-        	
-        	
 
         	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         	
@@ -190,10 +183,6 @@ class iKitesurfView extends Ui.View {
         
     }
 
-    // Called when this View is removed from the screen. Save the
-    // state of your app here.
-    function onHide() {
-    }
 
 	// Called from delegate whenever screen should be rendered
 	// If data == null, just render the screen again (e.g. time updated)
